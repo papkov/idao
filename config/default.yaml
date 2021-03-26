@@ -1,0 +1,18 @@
+hydra:
+  run:
+    dir: results/${now:%Y-%m-%d_%H-%M-%S}
+
+project: idao
+
+seed: 56
+
+data:
+  path: data/idao_dataset
+  ext: png
+
+train:
+  checkpoint_path: checkpoints
+  batch_size: 32
+  epochs_classification: 2
+  epochs_regression: 2
+  gpus: 1

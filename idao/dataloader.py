@@ -1,14 +1,14 @@
+import os
+from pathlib import Path
+
 import numpy as np
 import torch
-import os
-import pathlib as path
 from PIL import Image
-from torchvision.datasets import DatasetFolder
 from torch.utils.data import Dataset
+from torchvision.datasets import DatasetFolder
 
 
 class IDAODataset(DatasetFolder):
-
     def name_to_energy(self, name):
         try:
             names = os.path.split(name)[-1].split("_")
@@ -18,7 +18,7 @@ class IDAODataset(DatasetFolder):
             return torch.tensor(-1.0)
 
     def name_to_index(self, name):
-        return os.path.split(name)[-1].split('.')[0]
+        return os.path.split(name)[-1].split(".")[0]
 
     def __getitem__(self, index: int):
 
@@ -31,10 +31,11 @@ class IDAODataset(DatasetFolder):
 
         return sample, target, self.name_to_energy(path), self.name_to_index(path)
 
+
 class InferenceDataset(Dataset):
     def __init__(self, main_dir, transform, loader=None):
-        self.img_loaderj= img_loader
-        self.main_dir = path.Path(main_dir)
+        # self.img_loaderj = img_loader
+        self.main_dir = Path(main_dir)
         self.transform = transform
         self.all_imgs = list(self.main_dir.glob("*.png"))
         self.loader = loader
@@ -47,6 +48,7 @@ class InferenceDataset(Dataset):
         image = self.loader(img_loc)
         tensor_image = self.transform(image)
         return tensor_image, img_loc.name
+
 
 def img_loader(path: str):
     with Image.open(path) as img:
